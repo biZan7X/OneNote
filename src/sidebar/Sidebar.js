@@ -10,6 +10,7 @@ const Sidebar = ({
 	selectedNoteIndex,
 	selectNote,
 	newNote,
+	deleteNote,
 	classes,
 }) => {
 	const [addingNote, setAddingNote] = useState(false);
@@ -33,7 +34,7 @@ const Sidebar = ({
 	};
 
 	//const selectNote = () => console.log("select note");
-	const deleteNote = () => console.log("delete note");
+	//const deleteNote = () => console.log("delete note");
 
 	if (notes)
 		return (

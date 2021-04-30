@@ -49,6 +49,7 @@ const App = () => {
 		//& adding the new note in the list of notes
 		await setNotes([...notes, noteTemp]);
 
+		//TODO
 		//& find the index of the new note
 		const newNoteIndex = notes.indexOf(
 			notes.filter((note) => note.id === newId)[0]
@@ -68,6 +69,29 @@ const App = () => {
 		});
 	};
 
+	//* delete
+	//TODO : selected note
+	const deleteNote = async (note) => {
+		const noteIndex = notes.indexOf(note);
+
+		//& deleting from the notes state
+		await setNotes(notes.filter((noteTemp) => noteTemp !== note));
+
+		//& if we wanna delete the current selected noted
+		if (selectedNoteIndex === noteIndex) selectNote(null, null);
+		else {
+			if (notes.length > 1) {
+				//& since the length of notes will decrease , selected note's index will decrease
+				selectNote(notes[selectedNoteIndex - 1], selectedNoteIndex);
+			} else {
+				selectNote(null, null);
+			}
+		}
+
+		//& deleting from the firestore
+		db.collection("notes").doc(note.id).delete();
+	};
+
 	return (
 		<div className="app-container">
 			<Sidebar
@@ -75,6 +99,7 @@ const App = () => {
 				selectedNoteIndex={selectedNoteIndex}
 				selectNote={selectNote}
 				newNote={newNote}
+				deleteNote={deleteNote}
 			></Sidebar>
 			{selectedNote ? (
 				<Editor
