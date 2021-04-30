@@ -5,9 +5,15 @@ import List from "@material-ui/core/List";
 import { Divider, Button } from "@material-ui/core";
 import SidebarItem from "../sidebarItem/SidebarItem";
 
-const Sidebar = ({ notes, selectedNoteIndex, selectNote, classes }) => {
+const Sidebar = ({
+	notes,
+	selectedNoteIndex,
+	selectNote,
+	newNote,
+	classes,
+}) => {
 	const [addingNote, setAddingNote] = useState(false);
-	const [title, setTitle] = useState(null);
+	const [title, setTitle] = useState("");
 
 	const newNoteBtnClick = () => {
 		setTitle(null);
@@ -18,8 +24,12 @@ const Sidebar = ({ notes, selectedNoteIndex, selectNote, classes }) => {
 		setTitle(txt);
 	};
 
-	const newNote = () => {
-		console.log(addingNote, title);
+	const newNoteHandler = () => {
+		newNote(title);
+
+		//& setting the component states back to default
+		setTitle("");
+		setAddingNote(false);
 	};
 
 	//const selectNote = () => console.log("select note");
@@ -43,7 +53,7 @@ const Sidebar = ({ notes, selectedNoteIndex, selectNote, classes }) => {
 						/>
 						<Button
 							className={classes.newNoteSubmitBtn}
-							onClick={newNote}
+							onClick={newNoteHandler}
 						>
 							Submit Note
 						</Button>

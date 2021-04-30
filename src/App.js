@@ -13,14 +13,15 @@ const App = () => {
 
 	//*componentDidMount
 	useEffect(() => {
+		//* read
 		db.collection("notes").onSnapshot((serverUpdate) => {
 			const notesTemp = serverUpdate.docs.map((_doc) => {
 				const data = _doc.data();
 				data["id"] = _doc.id;
 				return data;
 			});
-			console.log(notesTemp);
 			setNotes(notesTemp);
+			console.log(notes);
 		});
 	}, []);
 
@@ -29,6 +30,36 @@ const App = () => {
 		setSelectedNoteIndex(index);
 	};
 
+	//*create
+	const newNote = async (title) => {
+		const noteTemp = {
+			title: title,
+			body: "",
+		};
+
+		//&response from the firestore , the newly created note
+		const res = await db.collection("notes").add({
+			title: noteTemp.title,
+			body: noteTemp.body,
+			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+		});
+
+		const newId = res.id;
+
+		//& adding the new note in the list of notes
+		await setNotes([...notes, noteTemp]);
+
+		//& find the index of the new note
+		const newNoteIndex = notes.indexOf(
+			notes.filter((note) => note.id === newId)[0]
+		);
+
+		//& now setting the new note as the current note
+		setSelectedNote(notes[newNoteIndex]);
+		setSelectedNoteIndex(newNoteIndex);
+	};
+
+	//* update
 	const noteUpdate = (id, noteObj) => {
 		db.collection("notes").doc(id).update({
 			title: noteObj.title,
@@ -43,6 +74,7 @@ const App = () => {
 				notes={notes}
 				selectedNoteIndex={selectedNoteIndex}
 				selectNote={selectNote}
+				newNote={newNote}
 			></Sidebar>
 			{selectedNote ? (
 				<Editor
