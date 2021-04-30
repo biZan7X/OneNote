@@ -5,8 +5,8 @@ export default function debounce(a, b, c) {
 			d = null;
 			c || (e = a.apply(f, g));
 		}
-		var f = this,
-			g = arguments;
+		var f = this;
+		var g = arguments;
 		return (
 			clearTimeout(d),
 			(d = setTimeout(h, b)),

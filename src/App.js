@@ -1,5 +1,9 @@
 import { useEffect, useState } from "react";
+import firebase from "./firebase/config";
 import { db } from "./firebase/config";
+//& components
+import Sidebar from "./sidebar/Sidebar";
+import Editor from "./editor/Editor";
 import "./App.css";
 
 const App = () => {
@@ -19,7 +23,37 @@ const App = () => {
 			setNotes(notesTemp);
 		});
 	}, []);
-	return <div className="App">Hello world</div>;
+
+	const selectNote = (note, index) => {
+		setSelectedNote(note);
+		setSelectedNoteIndex(index);
+	};
+
+	const noteUpdate = (id, noteObj) => {
+		db.collection("notes").doc(id).update({
+			title: noteObj.title,
+			body: noteObj.body,
+			timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+		});
+	};
+
+	return (
+		<div className="app-container">
+			<Sidebar
+				notes={notes}
+				selectedNoteIndex={selectedNoteIndex}
+				selectNote={selectNote}
+			></Sidebar>
+			{selectedNote ? (
+				<Editor
+					selectedNote={selectedNote}
+					selectedNoteIndex={selectedNoteIndex}
+					notes={notes}
+					noteUpdate={noteUpdate}
+				></Editor>
+			) : null}
+		</div>
+	);
 };
 
 export default App;
