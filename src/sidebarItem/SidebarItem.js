@@ -25,12 +25,10 @@ const SidebarItem = ({
 			<ListItem
 				className={classes.listItem}
 				selected={selectedNoteIndex === index}
+				onClick={() => selectNotes(note, index)}
 				alignItems="flex-start"
 			>
-				<div
-					className={classes.textSection}
-					onClick={() => selectNotes(note, index)}
-				>
+				<div className={classes.textSection}>
 					<ListItemText
 						primary={note.title}
 						secondary={removeHTMLTags(note.body.substring(0, 30)) + "..."}
