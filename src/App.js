@@ -21,7 +21,6 @@ const App = () => {
 				return data;
 			});
 			setNotes(notesTemp);
-			console.log(notes);
 		});
 	}, []);
 

@@ -1,71 +1,62 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactQuill from "react-quill";
-import debounce from "../helpers";
+import useDebounce from "../helpers";
 import BorderColorIcon from "@material-ui/icons/BorderColor";
 import { withStyles } from "@material-ui/core/styles";
 import styles from "./styles";
 
-class Editor extends React.Component {
-	constructor() {
-		super();
-		this.state = { text: "", title: "", id: "" };
-	}
+const Editor = ({
+	selectedNote,
+	selectedNoteIndex,
+	notes,
+	noteUpdate,
+	classes,
+}) => {
+	//* states
+	const [text, setText] = useState(selectedNote.body);
+	const [title, setTitle] = useState(selectedNote.title);
+	const [id, setId] = useState(selectedNote.id);
 
-	componentDidMount = () => {
-		this.setState({
-			title: this.props.selectedNote.title,
-			text: this.props.selectedNote.body,
-			id: this.props.selectedNote.id,
+	//* debouncer
+	const update = useDebounce();
+
+	//* selectedNote changes
+	useEffect(() => {
+		setTitle(selectedNote.title);
+		setText(selectedNote.body);
+		setId(selectedNote.id);
+	}, [selectedNote.id]);
+
+	//* DRY
+	const callbackFunc = () => {
+		noteUpdate(id, {
+			title: title,
+			body: text,
 		});
 	};
 
-	//* gets invoked when we select a new note
-	componentDidUpdate = () => {
-		if (this.props.selectedNote.id !== this.state.id) {
-			this.setState({
-				title: this.props.selectedNote.title,
-				text: this.props.selectedNote.body,
-				id: this.props.selectedNote.id,
-			});
-		}
+	const updateBody = async (val) => {
+		await setText(val); //^ updating the component state
+		update(callbackFunc); //^ updating the firestore
 	};
 
-	updateBody = async (val) => {
-		await this.setState({ text: val });
-		this.update();
+	const updateTitle = async (txt) => {
+		await setTitle(txt); //^ updating the component state
+		update(callbackFunc); //^ updating the firestore
 	};
 
-	updateTitle = async (txt) => {
-		await this.setState({ title: txt });
-		this.update();
-	};
-
-	update = debounce(() => {
-		this.props.noteUpdate(this.state.id, {
-			title: this.state.title,
-			body: this.state.text,
-		});
-	}, 2000);
-
-	render() {
-		const { classes } = this.props;
-
-		return (
-			<div className={classes.editorContainer}>
-				<BorderColorIcon className={classes.editIcon}></BorderColorIcon>
-				<input
-					className={classes.titleInput}
-					placeholder="Note title..."
-					value={this.state.title ? this.state.title : ""}
-					onChange={(e) => this.updateTitle(e.target.value)}
-				/>
-				<ReactQuill
-					value={this.state.text}
-					onChange={this.updateBody}
-				></ReactQuill>
-			</div>
-		);
-	}
-}
+	return (
+		<div className={classes.editorContainer}>
+			<BorderColorIcon className={classes.editIcon}></BorderColorIcon>
+			<input
+				className={classes.titleInput}
+				placeholder="Note title..."
+				value={title ? title : ""}
+				onChange={(e) => updateTitle(e.target.value)}
+			/>
+			<ReactQuill value={text} onChange={updateBody}></ReactQuill>
+		</div>
+	);
+};
 
 export default withStyles(styles)(Editor);
