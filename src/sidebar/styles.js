@@ -21,7 +21,7 @@ const styles = (theme) => ({
 		height: "35px",
 		borderBottom: "1px solid black",
 		borderRadius: "0px",
-		backgroundColor: "#29487d",
+		backgroundColor: "#80397b",
 		color: "white",
 		"&:hover": {
 			backgroundColor: "#88a2ce",

@@ -11,9 +11,10 @@ body {
 	height: 100%;
 	box-sizing: border-box;
 }
-.app-container {
+.dashboard-container {
 	height: 100%;
 	box-sizing: border-box;
+	position: relative;
 }
 .quill {
 	height: 100%;
@@ -37,4 +38,62 @@ body {
 	position: absolute;
 	top: 50px;
 	left: calc(50% - 165px);
+}
+
+.landing-page {
+	height: 100vh;
+	width: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: auto;
+}
+
+.signinbtn {
+	margin-top: 1rem;
+	background: none;
+	font-size: large;
+	padding: 0.5rem 1rem;
+	border-radius: 1rem;
+	border: 2px solid #80397b;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+.signinbtn img {
+	max-width: 4vh;
+}
+
+.signinbtn:hover {
+	background: #80397b;
+	color: white;
+}
+
+.signoutbtn {
+	margin-top: 1rem;
+	background: none;
+	font-size: large;
+	padding: 0.5rem 1rem;
+	border-radius: 1rem;
+	border: 2px solid #80397b;
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	bottom: 2%;
+	right: 0%;
+	margin-right: 2rem;
+}
+
+.signoutbtn img {
+	max-width: 4vh;
+}
+
+.signoutbtn:hover {
+	background: #80397b;
+	color: white;
 }
