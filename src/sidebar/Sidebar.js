@@ -33,9 +33,6 @@ const Sidebar = ({
 		setAddingNote(false);
 	};
 
-	//const selectNote = () => console.log("select note");
-	//const deleteNote = () => console.log("delete note");
-
 	if (notes)
 		return (
 			<div className={classes.sidebarContainer}>

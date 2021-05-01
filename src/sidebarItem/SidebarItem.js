@@ -16,7 +16,7 @@ const SidebarItem = ({
 }) => {
 	const selectNotes = (n, i) => selectNote(n, i);
 	const deleteNotes = (n) => {
-		if (window.confirm(`are you sure , you wanna delete : ${note.title}`))
+		if (window.confirm(`are you sure , you wanna delete : ${note.title} ❓`))
 			deleteNote(n);
 	};
 
@@ -25,8 +25,8 @@ const SidebarItem = ({
 			<ListItem
 				className={classes.listItem}
 				selected={selectedNoteIndex === index}
-				onClick={() => selectNotes(note, index)}
 				alignItems="flex-start"
+				onClick={() => selectNotes(note, index)}
 			>
 				<div className={classes.textSection}>
 					<ListItemText
